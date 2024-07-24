@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   TouchableOpacity,
   StyleSheet,
@@ -6,11 +6,11 @@ import {
   View,
   FlatList,
   Linking,
-} from 'react-native';
+} from "react-native";
 
-import {shortAddress} from '../utils';
-import useStore from '../zustand/store';
-import {utils} from 'ethers';
+import { shortAddress } from "../utils";
+import useStore from "../zustand/store";
+import { utils } from "ethers";
 
 interface Props {
   item: ItemProp;
@@ -25,13 +25,13 @@ type ItemProp = {
   value: string;
 };
 
-const color = '#ffffff';
+const color = "#ffffff";
 
-function HistoryItem({item, index, explorerUrl}: Props) {
-  const {hash, from, to, value} = item;
-  const {wallet, ethereumPrice} = useStore(state => state);
+function HistoryItem({ item, index, explorerUrl }: Props) {
+  const { hash, from, to, value } = item;
+  const { wallet, ethereumPrice } = useStore((state) => state);
   const address = wallet?.address;
-  const amount = utils.formatUnits(value, 'ether') ?? 0;
+  const amount = utils.formatUnits(value, "ether") ?? 0;
 
   const openExplorer = async () => {
     if (await Linking.canOpenURL(explorerUrl + hash)) {
@@ -43,10 +43,11 @@ function HistoryItem({item, index, explorerUrl}: Props) {
     <TouchableOpacity
       key={index.toString()}
       style={styles.mainContainer}
-      onPress={openExplorer}>
+      onPress={openExplorer}
+    >
       <View style={styles.img}>
         <Text style={styles.arrow}>
-          {address?.toLowerCase() === from ? '↑' : '↓'}
+          {address?.toLowerCase() === from ? "↑" : "↓"}
         </Text>
       </View>
 
@@ -64,13 +65,15 @@ function HistoryItem({item, index, explorerUrl}: Props) {
   );
 }
 
-const History = ({explorerUrl}: any) => {
-  const {txHistory} = useStore(state => state);
+const History = ({ explorerUrl }: any) => {
+  const { txHistory } = useStore((state) => state);
 
   return (
     <FlatList
-      data={txHistory}
-      renderItem={props => <HistoryItem {...props} explorerUrl={explorerUrl} />}
+      data={txHistory ?? []}
+      renderItem={(props) => (
+        <HistoryItem {...props} explorerUrl={explorerUrl} />
+      )}
       // eslint-disable-next-line react/no-unstable-nested-components
       ListEmptyComponent={() => <Text style={styles.emptyTxt}>Not found</Text>}
       contentContainerStyle={styles.listContent}
@@ -80,12 +83,12 @@ const History = ({explorerUrl}: any) => {
 };
 
 const styles = StyleSheet.create({
-  listContent: {marginBottom: '10%'},
+  listContent: { marginBottom: "10%" },
   mainContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: '5%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: "5%",
   },
   img: {
     width: 50,
@@ -93,32 +96,32 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 2,
     borderColor: color,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
-  titleContainer: {flex: 1, marginLeft: '5%'},
+  titleContainer: { flex: 1, marginLeft: "5%" },
   arrow: {
     fontSize: 24,
     color,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   title: {
     color,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   subTxt: {
-    color: color + '99',
+    color: color + "99",
     fontSize: 14,
-    marginTop: '2%',
+    marginTop: "2%",
   },
   emptyTxt: {
-    alignSelf: 'center',
+    alignSelf: "center",
     fontSize: 16,
-    color: color + '99',
-    fontWeight: 'bold',
-    marginTop: '5%',
+    color: color + "99",
+    fontWeight: "bold",
+    marginTop: "5%",
   },
-  balanceContainer: {alignItems: 'flex-end'},
+  balanceContainer: { alignItems: "flex-end" },
 });
 export default History;

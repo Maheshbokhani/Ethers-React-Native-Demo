@@ -1,10 +1,10 @@
-import {ethers, providers, utils} from 'ethers';
-import Config from 'react-native-config';
+import { ethers, providers, utils } from "ethers";
+import Config from "react-native-config";
 
-import {SUPPORTED_NETWORK} from '../constants';
+import { SUPPORTED_NETWORK } from "../constants";
 
 export function isValidPrivateKey(privateKey: string) {
-  if (!privateKey.startsWith('0x')) {
+  if (!privateKey.startsWith("0x")) {
     return false;
   }
 
@@ -28,55 +28,53 @@ export function isValidPrivateKey(privateKey: string) {
 export const getProvider = () => {
   // NOTE: Used "sepolia" network for Testnet, "mainnet" for Mainnet
   const infuraProvider = new providers.InfuraProvider(
-    'mainnet',
-    Config.INFURA_API_KEY,
+    Config.ETHEREUM_NETWORK,
+    Config.INFURA_API_KEY
   );
 
-  console.log('====================================');
-  console.log('ETHEREUM_NETWORK', Config.ETHEREUM_NETWORK);
-  console.log('====================================');
-
   // NOTE: "sepolia" network for Testnet, "homestead" for Mainnet
-  const etherscanProvider = new providers.EtherscanProvider('homestead');
+  const etherscanProvider = new providers.EtherscanProvider(
+    Config.ETHEREUM_NETWORK
+  );
 
   // if INFURA is down
   return new providers.FallbackProvider([infuraProvider, etherscanProvider]);
 };
 
 export const networkInfo = async (
-  chainId: number | undefined,
+  chainId: number | undefined
 ): Promise<any> => {
   if (!chainId) {
     return null;
   }
-  const network = SUPPORTED_NETWORK.find(({chainId: id}) => id === chainId);
+  const network = SUPPORTED_NETWORK.find(({ chainId: id }) => id === chainId);
   return network;
 };
 
 export const shortAddress = (address: string, length?: number) => {
   if (!address) {
-    return '';
+    return "";
   }
   const value = `${address.slice(0, length ?? 4)}...${address.slice(
     address.length - (length ?? 4),
-    address.length,
+    address.length
   )}`;
   return value;
 };
 
 export const normalizeValue = (input: string): string => {
-  let result = input.replace(/,/g, '.').replace(/\s/g, '');
+  let result = input.replace(/,/g, ".").replace(/\s/g, "");
 
   result = result.trim();
 
-  if (result.startsWith('0')) {
-    result = result.replace(/^0+/, '');
-    if (result === '') {
-      result = '0';
+  if (result.startsWith("0")) {
+    result = result.replace(/^0+/, "");
+    if (result === "") {
+      result = "0";
     }
   }
 
-  if (result.startsWith('.')) {
+  if (result.startsWith(".")) {
     result = `0${result}`;
   }
 
@@ -97,22 +95,22 @@ export const isValidAddress = (input: string): boolean => {
 
 export const convertGasCostToEth = (
   gasUnits: ethers.BigNumberish,
-  gasPriceInGwei: string,
+  gasPriceInGwei: string
 ) => {
-  const gasPrice = utils.parseUnits(gasPriceInGwei.toString(), 'gwei');
+  const gasPrice = utils.parseUnits(gasPriceInGwei.toString(), "gwei");
   const gasCostInWei = gasPrice.mul(gasUnits);
   const gasCostInEth = utils.formatEther(gasCostInWei);
   return gasCostInEth;
 };
 
 export const convertEthToGwei = (eth: string) => {
-  return utils.parseUnits(eth.toString(), 'gwei');
+  return utils.parseUnits(eth.toString(), "gwei");
 };
 
 export const formatBalance = (
   totalETH: string | number,
   ethereumPrice: any,
-  fixedNumber?: number,
+  fixedNumber?: number
 ) => {
   if (!totalETH || !ethereumPrice) {
     return 0;
