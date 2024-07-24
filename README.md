@@ -28,11 +28,11 @@ Ethereum wallet in React native.
 
 Create a new .env file and add this 
 
-`ETHEREUM_NETWORK=sepolia
-INFURA_API_KEY=<YOUR_INFURA_KEY>
-WALLET_PASSWORD=<ANY_RANDOM_VALUE> 
-ETHERSCAN_API_KEY=<YOUR_ETHERSCAN_API_KEY>
-COINGECKO_API=<YOUR_COINGECKO_API_KEY>` 
+`ETHEREUM_NETWORK=sepolia`
+`INFURA_API_KEY=<YOUR_INFURA_KEY>`
+`WALLET_PASSWORD=<ANY_RANDOM_VALUE>`
+`ETHERSCAN_API_KEY=<YOUR_ETHERSCAN_API_KEY>`
+`COINGECKO_API=<YOUR_COINGECKO_API_KEY>` 
 
 For reference: https://www.infura.io/, https://docs.etherscan.io/, https://www.coingecko.com/en/api
 NOTE: Infura used for different provider. Etherscan API used for transaction history and Coingecko used for token price in USD currency
